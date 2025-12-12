@@ -20,7 +20,7 @@ export class StudentService {
       parent_number,
       img_url,
     } = createStudentInput;
-  
+
     const student = this.studentRepo.create({
       full_name,
       phone_number,
@@ -30,11 +30,10 @@ export class StudentService {
       img_url,
       joined_at: new Date(),
     });
-  
+
     await this.studentRepo.save(student);
     return student;
   }
-  
 
   async findAll() {
     const students = await this.studentRepo.find();
@@ -54,10 +53,10 @@ export class StudentService {
     if (!student) {
       throw new NotFoundException("Student not found");
     }
-  
+
     this.studentRepo.merge(student, updateStudentInput);
     const updatedStudent = await this.studentRepo.save(student);
-  
+
     return updatedStudent;
   }
 
@@ -67,6 +66,6 @@ export class StudentService {
       throw new NotFoundException("Student not found");
     }
     await this.studentRepo.delete(id);
-    return student
+    return student;
   }
 }
