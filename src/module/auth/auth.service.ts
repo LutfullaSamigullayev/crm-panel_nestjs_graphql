@@ -1,10 +1,15 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
 import { Auth } from "./entities/auth.entity";
 import { CreateUserInput } from "./dto/create-user.input";
+import { UserRole } from "src/common/constants/role";
 
 @Injectable()
 export class AuthService {
@@ -13,6 +18,28 @@ export class AuthService {
     private authRepo: Repository<Auth>,
     private jwtService: JwtService
   ) {}
+
+  // async registerSuperAdmin(createUserInput: CreateUserInput): Promise<Auth> {
+  //   const existing = await this.authRepo.findOne({
+  //     where: { login: createUserInput.login },
+  //   });
+
+  //   if (existing) {
+  //     throw new BadRequestException("Bu login allaqachon mavjud");
+  //   }
+
+  //   const hashedPassword = await bcrypt.hash(createUserInput.password, 10);
+
+  //   const newUser = this.authRepo.create({
+  //     ...createUserInput,
+  //     password: hashedPassword,
+  //     role: UserRole.SUPER_ADMIN,
+  //     joined_at: new Date(),
+  //     update_at: new Date(),
+  //   });
+
+  //   return await this.authRepo.save(newUser);
+  // }
 
   async createUser(createUserInput: CreateUserInput): Promise<Auth> {
     const hashedPassword = await bcrypt.hash(createUserInput.password, 10);
