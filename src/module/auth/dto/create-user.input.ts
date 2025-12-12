@@ -12,7 +12,7 @@ export class CreateUserInput {
   @Field(() => String)
   profession: string;
 
-  @Field(() => UserRole)
+  @Field(() => UserRole, { defaultValue: UserRole.USER, nullable: true })
   role: UserRole;
 
   @Field(() => String)
