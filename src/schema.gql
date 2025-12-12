@@ -1,0 +1,87 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Student {
+  id: Int!
+  full_name: String!
+  phone_number: String!
+  profession: String!
+  parent_name: String!
+  parent_number: String!
+  img_url: String!
+  joined_at: DateTime!
+  left_at: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Auth {
+  id: Int!
+  login: String!
+  password: String!
+  profession: String!
+  role: UserRole!
+  img_url: String!
+  joined_at: DateTime!
+  update_at: DateTime!
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  SUPER_ADMIN
+}
+
+type AuthResponse {
+  token: String!
+  user: Auth!
+}
+
+type Query {
+  findAll: [Student!]!
+  findOne(id: Int!): Student!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): Auth!
+  login(loginInput: LoginInput!): AuthResponse!
+  createStudent(createStudentInput: CreateStudentInput!): Student!
+  updateStudent(updateStudentInput: UpdateStudentInput!): Student!
+  removeStudent(id: Int!): Student!
+}
+
+input CreateUserInput {
+  login: String!
+  password: String!
+  profession: String!
+  role: UserRole = USER
+  img_url: String!
+}
+
+input LoginInput {
+  login: String!
+  password: String!
+}
+
+input CreateStudentInput {
+  full_name: String!
+  phone_number: String!
+  profession: String!
+  parent_name: String!
+  parent_number: String!
+  img_url: String!
+}
+
+input UpdateStudentInput {
+  full_name: String
+  phone_number: String
+  profession: String
+  parent_name: String
+  parent_number: String
+  img_url: String
+  id: Int!
+}
