@@ -4,6 +4,8 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { join } from "path";
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { StudentModule } from './module/student/student.module';
+import { AuthModule } from './module/auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +27,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    AuthModule,
+    StudentModule,
+
   ],
   controllers: [],
   providers: [],
