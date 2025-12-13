@@ -5,7 +5,7 @@ import { LoginInput } from "./dto/login.input";
 import { Auth } from "./entities/auth.entity";
 import { AuthResponse } from "./dto/auth-response";
 import { UseGuards } from "@nestjs/common";
-import { AuthGuard } from "src/common/guards/auth-guard";
+import { GqlAuthGuard } from "src/common/guards/auth-guard";
 import { RolesGuard } from "src/common/guards/roles.guard";
 import { Roles } from "src/common/decorators/roles.decorator";
 import { UserRole } from "src/common/constants/role";
@@ -21,7 +21,7 @@ export class AuthResolver {
   //   return this.authService.registerSuperAdmin(createUserInput);
   // }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   @Mutation(() => Auth)
   createUser(@Args("createUserInput") createUserInput: CreateUserInput) {
