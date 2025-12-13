@@ -51,6 +51,7 @@ type Mutation {
   login(loginInput: LoginInput!): AuthResponse!
   createStudent(createStudentInput: CreateStudentInput!): Student!
   updateStudent(updateStudentInput: UpdateStudentInput!): Student!
+  leaveStudent(id: Int!): Student!
   removeStudent(id: Int!): Student!
 }
 
