@@ -60,6 +60,16 @@ export class StudentService {
     return updatedStudent;
   }
 
+  async leave(id: number) {
+    const student = await this.studentRepo.findOneBy({ id });
+    if (!student) {
+      throw new NotFoundException("Student not found");
+    }
+    student.left_at = new Date();
+    const updatedStudent = await this.studentRepo.save(student);
+    return updatedStudent;
+  }
+
   async remove(id: number) {
     const student = await this.studentRepo.findOneBy({ id });
     if (!student) {

@@ -4,10 +4,10 @@ import { Student } from "./entities/student.entity";
 import { CreateStudentInput } from "./dto/create-student.input";
 import { UpdateStudentInput } from "./dto/update-student.input";
 import { UseGuards } from "@nestjs/common";
-import { AuthGuard } from "src/common/guards/auth-guard";
 import { RolesGuard } from "src/common/guards/roles.guard";
 import { Roles } from "src/common/decorators/roles.decorator";
 import { UserRole } from "src/common/constants/role";
+import { GqlAuthGuard } from "src/common/guards/auth-guard";
 
 @Resolver(() => Student)
 export class StudentResolver {
@@ -15,7 +15,7 @@ export class StudentResolver {
 
   
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   @Mutation(() => Student)
   createStudent(
@@ -34,7 +34,7 @@ export class StudentResolver {
     return this.studentService.findOne(id);
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   @Mutation(() => Student)
   updateStudent(
@@ -46,7 +46,14 @@ export class StudentResolver {
     );
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Mutation(() => Student)
+  leaveStudent(@Args("id", { type: () => Int }) id: number) {
+    return this.studentService.leave(id);
+  }
+
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   @Mutation(() => Student)
   removeStudent(@Args("id", { type: () => Int }) id: number) {
