@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int, registerEnumType } from "@nestjs/graphql";
+import { GroupEnum } from "src/common/constants/group-enum";
 import { UserRole } from "src/common/constants/role";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
@@ -21,9 +22,13 @@ export class Auth {
   @Field(() => String)
   password: string;
 
-  @Column()
-  @Field(() => String)
-  profession: string;
+  @Column({
+    type: "enum",
+    enum: GroupEnum,
+    nullable: true,
+  })
+  @Field(() => GroupEnum, { nullable: true })
+  profession?: GroupEnum;
 
   @Column({
     type: "enum",
