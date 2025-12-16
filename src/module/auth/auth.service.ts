@@ -44,9 +44,25 @@ export class AuthService {
   async createUser(createUserInput: CreateUserInput): Promise<Auth> {
     const hashedPassword = await bcrypt.hash(createUserInput.password, 10);
 
+    let profession: string;
+
+    if (createUserInput.role === UserRole.TEACHER) {
+      if (!createUserInput.teacherProfession) {
+        throw new BadRequestException(
+          "Teacher must have a profession (GroupEnum)"
+        );
+      }
+      profession = createUserInput.teacherProfession;
+    } else {
+      profession = createUserInput.role;
+    }
+
     const newUser = this.authRepo.create({
-      ...createUserInput,
+      login: createUserInput.login,
       password: hashedPassword,
+      role: createUserInput.role ?? UserRole.USER,
+      profession: createUserInput.teacherProfession,
+      img_url: createUserInput.img_url,
       joined_at: new Date(),
       update_at: new Date(),
     });
