@@ -2,6 +2,44 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Auth {
+  id: Int!
+  login: String!
+  password: String!
+  profession: GroupEnum
+  role: UserRole!
+  img_url: String!
+  joined_at: DateTime!
+  update_at: DateTime!
+}
+
+enum GroupEnum {
+  BACKEND
+  FRONTEND
+  DESIGN
+  SMM
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  SUPER_ADMIN
+  TEACHER
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Group {
+  id: Int!
+  profession: GroupEnum!
+  group_name: String!
+  teacher: Auth
+  students: [Student!]
+}
+
 type Student {
   id: Int!
   full_name: String!
@@ -10,36 +48,15 @@ type Student {
   parent_name: String!
   parent_number: String!
   img_url: String!
+  group: Group
   joined_at: DateTime!
   left_at: DateTime
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type StudentStatistics {
   month: DateTime!
   total_joined: Int!
   total_left: Int!
-}
-
-type Auth {
-  id: Int!
-  login: String!
-  password: String!
-  profession: String!
-  role: UserRole!
-  img_url: String!
-  joined_at: DateTime!
-  update_at: DateTime!
-}
-
-enum UserRole {
-  ADMIN
-  USER
-  SUPER_ADMIN
 }
 
 type AuthResponse {
@@ -51,6 +68,7 @@ type Query {
   getStudents(page: Int, limit: Int, search: String): Student!
   getStudentStatistics: [StudentStatistics!]!
   findOne(id: Int!): Student!
+  group(id: Int!): Group!
 }
 
 type Mutation {
@@ -60,12 +78,15 @@ type Mutation {
   updateStudent(updateStudentInput: UpdateStudentInput!): Student!
   leaveStudent(id: Int!): Student!
   removeStudent(id: Int!): Student!
+  createGroup(createGroupInput: CreateGroupInput!): Group!
+  updateGroup(updateGroupInput: UpdateGroupInput!): Group!
+  removeGroup(id: Int!): Group!
 }
 
 input CreateUserInput {
   login: String!
   password: String!
-  profession: String!
+  teacherProfession: GroupEnum
   role: UserRole = USER
   img_url: String!
 }
@@ -91,5 +112,18 @@ input UpdateStudentInput {
   parent_name: String
   parent_number: String
   img_url: String
+  id: Int!
+}
+
+input CreateGroupInput {
+  profession: GroupEnum!
+  group_name: String!
+  teacherId: Int
+}
+
+input UpdateGroupInput {
+  profession: GroupEnum
+  group_name: String
+  teacherId: Int
   id: Int!
 }
