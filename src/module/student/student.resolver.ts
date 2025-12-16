@@ -8,12 +8,11 @@ import { RolesGuard } from "src/common/guards/roles.guard";
 import { Roles } from "src/common/decorators/roles.decorator";
 import { UserRole } from "src/common/constants/role";
 import { GqlAuthGuard } from "src/common/guards/auth-guard";
+import { StudentStatistics } from "./dto/statistic-student";
 
 @Resolver(() => Student)
 export class StudentResolver {
   constructor(private readonly studentService: StudentService) {}
-
-  
 
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
@@ -24,9 +23,18 @@ export class StudentResolver {
     return this.studentService.create(createStudentInput);
   }
 
-  @Query(() => [Student])
-  findAll() {
-    return this.studentService.findAll();
+  @Query(() => Student)
+  getStudents(
+    @Args("page", { type: () => Int, nullable: true }) page?: number,
+    @Args("limit", { type: () => Int, nullable: true }) limit?: number,
+    @Args("search", { type: () => String, nullable: true }) search?: string
+  ) {
+    return this.studentService.findAll({ page, limit, search });
+  }
+
+  @Query(() => [StudentStatistics])
+  getStudentStatistics() {
+    return this.studentService.getStudentsStatistics();
   }
 
   @Query(() => Student)
