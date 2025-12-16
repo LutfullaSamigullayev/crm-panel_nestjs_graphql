@@ -6,6 +6,7 @@ import { join } from "path";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudentModule } from './module/student/student.module';
 import { AuthModule } from './module/auth/auth.module';
+import { GroupModule } from './module/group/group.module';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { AuthModule } from './module/auth/auth.module';
     }),
     AuthModule,
     StudentModule,
-
+    GroupModule,
   ],
   controllers: [],
   providers: [],
