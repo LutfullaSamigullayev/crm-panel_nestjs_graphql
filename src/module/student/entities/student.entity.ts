@@ -1,5 +1,12 @@
 import { ObjectType, Field, Int } from "@nestjs/graphql";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Group } from "src/module/group/entities/group.entity";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @ObjectType()
 @Entity({ name: "student" })
@@ -31,6 +38,13 @@ export class Student {
   @Column()
   @Field(() => String)
   img_url: string;
+
+  @ManyToOne(() => Group, (group) => group.students, {
+    nullable: true,
+    onDelete: "SET NULL",
+  })
+  @Field(() => Group, { nullable: true })
+  group?: Group | null;
 
   @Column({ type: "timestamp" })
   @Field(() => Date)
