@@ -7,6 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudentModule } from './module/student/student.module';
 import { AuthModule } from './module/auth/auth.module';
 import { GroupModule } from './module/group/group.module';
+import { BotModule } from './module/bot/bot.module';
+import { AttendanceModule } from './module/attendance/attendance.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { GroupModule } from './module/group/group.module';
     AuthModule,
     StudentModule,
     GroupModule,
+    BotModule,
+    AttendanceModule,
   ],
   controllers: [],
   providers: [],
