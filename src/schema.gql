@@ -64,11 +64,35 @@ type AuthResponse {
   user: Auth!
 }
 
+type Bot {
+  id: ID!
+  first_name: String!
+  phone_number: String
+  message: String!
+  createdAt: DateTime!
+}
+
+type AttendanceStudent {
+  id: Int!
+  student: Student!
+  is_present: Boolean!
+}
+
+type Attendance {
+  id: Int!
+  group: Group!
+  date: DateTime!
+  students: [AttendanceStudent!]!
+}
+
 type Query {
   getStudents(page: Int, limit: Int, search: String): Student!
   getStudentStatistics: [StudentStatistics!]!
   findOne(id: Int!): Student!
   group(id: Int!): Group!
+  getMessagesFromToday: [Bot!]!
+  getMessagesFromLastTenDays: [Bot!]!
+  attendanceByGroup(groupId: Int!): [Attendance!]!
 }
 
 type Mutation {
@@ -81,6 +105,7 @@ type Mutation {
   createGroup(createGroupInput: CreateGroupInput!): Group!
   updateGroup(updateGroupInput: UpdateGroupInput!): Group!
   removeGroup(id: Int!): Group!
+  createAttendance(createAttendanceInput: CreateAttendanceInput!): Attendance!
 }
 
 input CreateUserInput {
@@ -126,4 +151,15 @@ input UpdateGroupInput {
   group_name: String
   teacherId: Int
   id: Int!
+}
+
+input CreateAttendanceInput {
+  groupId: Int!
+  date: DateTime!
+  students: [AttendanceStudentInput!]!
+}
+
+input AttendanceStudentInput {
+  studentId: Int!
+  is_present: Boolean!
 }
