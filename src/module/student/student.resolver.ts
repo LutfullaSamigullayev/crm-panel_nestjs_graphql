@@ -9,6 +9,7 @@ import { Roles } from "src/common/decorators/roles.decorator";
 import { UserRole } from "src/common/constants/role";
 import { GqlAuthGuard } from "src/common/guards/auth-guard";
 import { StudentStatistics } from "./dto/statistic-student";
+import { StudentPagination } from "./dto/student-pagination.dto";
 
 @Resolver(() => Student)
 export class StudentResolver {
@@ -23,7 +24,7 @@ export class StudentResolver {
     return this.studentService.create(createStudentInput);
   }
 
-  @Query(() => Student)
+  @Query(() => StudentPagination)
   getStudents(
     @Args("page", { type: () => Int, nullable: true }) page?: number,
     @Args("limit", { type: () => Int, nullable: true }) limit?: number,
