@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, registerEnumType } from "@nestjs/graphql";
+import { ObjectType, Field, Int, registerEnumType, HideField } from "@nestjs/graphql";
 import { GroupEnum } from "src/common/constants/group-enum";
 import { UserRole } from "src/common/constants/role";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
@@ -19,8 +19,12 @@ export class Auth {
   login: string;
 
   @Column()
-  @Field(() => String)
+  @HideField()
   password: string;
+
+  @Column()
+  @Field(() => String)
+  full_name: string;
 
   @Column({
     type: "enum",
@@ -38,9 +42,9 @@ export class Auth {
   @Field(() => UserRole)
   role: UserRole;
 
-  @Column()
-  @Field(() => String)
-  img_url: string;
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  img_url?: string;
 
   @Column({ type: "timestamp" })
   @Field(() => Date)

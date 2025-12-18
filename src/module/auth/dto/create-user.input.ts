@@ -10,12 +10,15 @@ export class CreateUserInput {
   @Field(() => String)
   password: string;
 
+  @Field(() => String)
+  full_name: string;
+
   @Field(() => GroupEnum, { nullable: true })
   teacherProfession?: GroupEnum;
 
   @Field(() => UserRole, { defaultValue: UserRole.USER, nullable: true })
   role: UserRole;
 
-  @Field(() => String)
-  img_url: string;
+  @Field(() => String, {nullable: true})
+  img_url?: string;
 }
