@@ -4,7 +4,7 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { DeepPartial, Repository } from "typeorm";
 import { Group } from "./entities/group.entity";
 import { CreateGroupInput } from "./dto/create-group.input";
 import { UpdateGroupInput } from "./dto/update-group.input";
@@ -28,7 +28,7 @@ export class GroupService {
   async create(createGroupInput: CreateGroupInput): Promise<Group> {
     const { teacherId, profession, group_name } = createGroupInput;
 
-    let teacher: Partial<Auth> | undefined = undefined;
+    let teacher: Auth | undefined;
 
     if (teacherId) {
       const teacherEntity = await this.authRepo.findOne({
@@ -49,22 +49,30 @@ export class GroupService {
         );
       }
 
-      teacher = { id: teacherEntity.id } as Partial<Auth>;
+      teacher = teacherEntity;
     }
 
-    const group = this.groupRepo.create({
+    const groupData: DeepPartial<Group> = {
       group_name,
       profession,
-      teacher,
+      teacher: teacher ?? undefined,
+    };
+
+    const group = this.groupRepo.create(groupData);
+    const savedGroup = await this.groupRepo.save(group);
+
+    const fullGroup = await this.groupRepo.findOne({
+      where: { id: savedGroup.id },
+      relations: ["teacher", "students"],
     });
 
-    return this.groupRepo.save(group);
+    if (!fullGroup) throw new NotFoundException("Group not found after save");
+
+    return fullGroup;
   }
 
   async findAll(): Promise<Group[]> {
-    return this.groupRepo.find({
-      relations: ["students", "teacher"],
-    });
+    return this.groupRepo.find({ relations: ["teacher", "students"] });
   }
 
   async findOne(id: number): Promise<Group> {
