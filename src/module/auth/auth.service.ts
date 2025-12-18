@@ -60,6 +60,7 @@ export class AuthService {
     const newUser = this.authRepo.create({
       login: createUserInput.login,
       password: hashedPassword,
+      full_name: createUserInput.full_name,
       role: createUserInput.role ?? UserRole.USER,
       profession: createUserInput.teacherProfession,
       img_url: createUserInput.img_url,
@@ -95,5 +96,15 @@ export class AuthService {
       token,
       user,
     };
+  }
+
+  async findAll(): Promise<Auth[]> {
+    return this.authRepo.find();
+  }
+
+  async findAllTeachers(): Promise<Auth[]> {
+    return this.authRepo.find({
+      where: { role: UserRole.TEACHER },
+    });
   }
 }

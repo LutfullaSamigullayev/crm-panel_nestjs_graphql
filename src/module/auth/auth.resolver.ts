@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args } from "@nestjs/graphql";
+import { Resolver, Mutation, Args, Query } from "@nestjs/graphql";
 import { AuthService } from "./auth.service";
 import { CreateUserInput } from "./dto/create-user.input";
 import { LoginInput } from "./dto/login.input";
@@ -32,5 +32,15 @@ export class AuthResolver {
   async login(@Args("loginInput") loginInput: LoginInput) {
     const { login, password } = loginInput;
     return this.authService.login(login, password);
+  }
+
+  @Query(() => [Auth])
+  findAllUsers() {
+    return this.authService.findAll();
+  }
+
+  @Query(() => [Auth])
+  findAllTeachers() {
+    return this.authService.findAllTeachers();
   }
 }
