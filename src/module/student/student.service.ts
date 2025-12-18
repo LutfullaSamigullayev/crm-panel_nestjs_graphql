@@ -10,12 +10,10 @@ export class StudentService {
   constructor(
     @InjectRepository(Student) private studentRepo: Repository<Student>
   ) {}
-
   async create(createStudentInput: CreateStudentInput) {
     const {
       full_name,
       phone_number,
-      profession,
       parent_name,
       parent_number,
       img_url,
@@ -24,7 +22,6 @@ export class StudentService {
     const student = this.studentRepo.create({
       full_name,
       phone_number,
-      profession,
       parent_name,
       parent_number,
       img_url,
@@ -52,7 +49,7 @@ export class StudentService {
       where = [
         { full_name: ILike(`%${search}%`) },
         { phone_number: ILike(`%${search}%`) },
-        { profession: ILike(`%${search}%`) },
+        // { profession: ILike(`%${search}%`) },
         { parent_name: ILike(`%${search}%`) },
       ];
     }

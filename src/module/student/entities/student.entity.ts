@@ -25,19 +25,15 @@ export class Student {
 
   @Column()
   @Field(() => String)
-  profession: string;
-
-  @Column()
-  @Field(() => String)
   parent_name: string;
 
   @Column()
   @Field(() => String)
   parent_number: string;
 
-  @Column()
-  @Field(() => String)
-  img_url: string;
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  img_url?: string;
 
   @ManyToOne(() => Group, (group) => group.students, {
     nullable: true,

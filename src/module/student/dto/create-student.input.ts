@@ -9,14 +9,11 @@ export class CreateStudentInput {
   phone_number: string;
 
   @Field(() => String)
-  profession: string;
-
-  @Field(() => String)
   parent_name: string;
 
   @Field(() => String)
   parent_number: string;
 
-  @Field(() => String)
-  img_url: string;
+  @Field(() => String, {nullable: true})
+  img_url?: string;
 }
