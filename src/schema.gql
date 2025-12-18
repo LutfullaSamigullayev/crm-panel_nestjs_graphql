@@ -5,10 +5,10 @@
 type Auth {
   id: Int!
   login: String!
-  password: String!
+  full_name: String!
   profession: GroupEnum
   role: UserRole!
-  img_url: String!
+  img_url: String
   joined_at: DateTime!
   update_at: DateTime!
 }
@@ -44,10 +44,9 @@ type Student {
   id: Int!
   full_name: String!
   phone_number: String!
-  profession: String!
   parent_name: String!
   parent_number: String!
-  img_url: String!
+  img_url: String
   group: Group
   joined_at: DateTime!
   left_at: DateTime
@@ -57,6 +56,13 @@ type StudentStatistics {
   month: DateTime!
   total_joined: Int!
   total_left: Int!
+}
+
+type StudentPagination {
+  totalPage: Int!
+  prev: Student
+  next: Student
+  students: [Student!]!
 }
 
 type AuthResponse {
@@ -86,9 +92,12 @@ type Attendance {
 }
 
 type Query {
-  getStudents(page: Int, limit: Int, search: String): Student!
+  findAllUsers: [Auth!]!
+  findAllTeachers: [Auth!]!
+  getStudents(page: Int, limit: Int, search: String): StudentPagination!
   getStudentStatistics: [StudentStatistics!]!
   findOne(id: Int!): Student!
+  findAllGroups: [Group!]!
   group(id: Int!): Group!
   getMessagesFromToday: [Bot!]!
   getMessagesFromLastTenDays: [Bot!]!
@@ -105,15 +114,18 @@ type Mutation {
   createGroup(createGroupInput: CreateGroupInput!): Group!
   updateGroup(updateGroupInput: UpdateGroupInput!): Group!
   removeGroup(id: Int!): Group!
+  addStudentToGroup(groupId: Int!, studentId: Int!): Group!
+  removeStudentFromGroup(groupId: Int!, studentId: Int!): Group!
   createAttendance(createAttendanceInput: CreateAttendanceInput!): Attendance!
 }
 
 input CreateUserInput {
   login: String!
   password: String!
+  full_name: String!
   teacherProfession: GroupEnum
   role: UserRole = USER
-  img_url: String!
+  img_url: String
 }
 
 input LoginInput {
@@ -124,16 +136,14 @@ input LoginInput {
 input CreateStudentInput {
   full_name: String!
   phone_number: String!
-  profession: String!
   parent_name: String!
   parent_number: String!
-  img_url: String!
+  img_url: String
 }
 
 input UpdateStudentInput {
   full_name: String
   phone_number: String
-  profession: String
   parent_name: String
   parent_number: String
   img_url: String
