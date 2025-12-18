@@ -1,5 +1,5 @@
 // dto/create-attendance.input.ts
-import { InputType, Field, Int } from "@nestjs/graphql";
+import { InputType, Field, Int, GraphQLISODateTime } from "@nestjs/graphql";
 import { AttendanceStudentInput } from "./attendance-student.input";
 
 @InputType()
@@ -7,7 +7,7 @@ export class CreateAttendanceInput {
   @Field(() => Int)
   groupId: number;
 
-  @Field(() => Date)
+  @Field(() => GraphQLISODateTime)
   date: Date;
 
   @Field(() => [AttendanceStudentInput])

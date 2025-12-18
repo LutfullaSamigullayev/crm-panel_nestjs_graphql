@@ -1,5 +1,5 @@
 // src/module/attendance/entities/attendance.entity.ts
-import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { ObjectType, Field, Int, GraphQLISODateTime } from "@nestjs/graphql";
 import { Group } from "src/module/group/entities/group.entity";
 import {
   Column,
@@ -21,8 +21,8 @@ export class Attendance {
   @Field(() => Group)
   group: Group;
 
-  @Column({ type: "date" })
-  @Field(() => Date)
+  @Column({ type: "timestamp", default: () => "NOW()"})
+  @Field(() => GraphQLISODateTime)
   date: Date;
 
   @OneToMany(
